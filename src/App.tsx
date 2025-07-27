@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { ChefHat as Chef, TrendingUp, Recycle, Brain, BarChart3, Calendar, Settings, User, Mic, IndianRupee, Lightbulb, Target, Clock, Star } from 'lucide-react';
+import { ChefHat as Chef, TrendingUp, Recycle, Brain, BarChart3, Calendar, Settings, User, Mic, IndianRupee, Lightbulb, Target, Clock, Star, Phone, BotMessageSquare, Loader2Icon, Menu, X } from 'lucide-react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar, Pie } from 'react-chartjs-2';
+import Vapi from '@vapi-ai/web';
+import { Toaster, toast } from 'sonner';
+
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend);
@@ -42,7 +45,7 @@ const AIChef = () => {
     const [currentDateTime, setCurrentDateTime] = useState('');
     const [notification, setNotification] = useState<string | null>(null);
 
-    const API_KEY = "AIzaSyC9ww598PYK9YbhQxaUdlwy7ps5aQaNcdM";
+    const API_KEY = "AIzaSyASxHWMU-e4sweZohMia3iVN3vefSRh0l8"; // IMPORTANT: Replace with your key
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
     const recognition = useMemo(() => {
@@ -127,7 +130,7 @@ const AIChef = () => {
     };
 
     return (
-        <div className="h-full w-full flex items-start justify-center">
+        <div className="h-full w-full flex items-start justify-center pt-8">
             <div className="w-full max-w-2xl mx-auto space-y-6">
                 <header className="text-center">
                     <h1 className="text-5xl font-bold text-orange-500">AI Sous-Chef</h1>
@@ -167,7 +170,7 @@ const ProfitOptimizer = ({
     handlePriceChange, handlePlatesSoldChange,
     dailyPerformance, aiRecommendation
 }: any) => (
-    <div className="h-full bg-white rounded-2xl shadow-sm border border-gray-200 p-8 overflow-y-auto">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-8">
         <h1 className="text-3xl font-bold text-center text-green-700 mb-6">Profit Optimizer</h1>
         <div className="bg-green-50 p-6 rounded-lg shadow-inner mb-6">
             <h2 className="text-xl font-bold text-green-600 mb-4">Daily Ingredient Prices (₹ per kg/L)</h2>
@@ -274,7 +277,7 @@ const PerformanceAnalytics = ({ menuData, dailyPerformance }: { menuData: any[],
     };
 
     return (
-        <div className="h-full bg-white rounded-2xl shadow-sm border border-gray-200 p-8 overflow-y-auto space-y-8">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-8 space-y-8">
             <h1 className="text-4xl font-extrabold text-center text-pink-700">Live Performance Analytics</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-blue-50 p-6 rounded-lg shadow-lg text-center border border-blue-200">
@@ -355,11 +358,10 @@ const ZeroWaste = () => {
         setError(null);
         setGeneratedRecipe(null);
 
-        const systemInstruction = `You are "Chaat-GPT", an expert culinary assistant for Indian street food vendors... Your task is to... create a JSON object with two keys: "recipeName" and "instructions".`;
+        const systemInstruction = `You are "Chaat-GPT", an expert culinary assistant for Indian street food vendors. You specialize in creating delicious, sellable items from leftovers to minimize waste and maximize profit. Your tone is creative and encouraging. Your task is to take a list of leftover ingredients and generate a simple, appealing recipe suitable for a street food stall. The output must be a valid JSON object with two keys: "recipeName" (a catchy, marketable name for the dish) and "instructions" (clear, step-by-step instructions for preparation, written in a simple, friendly tone, possibly using some Hinglish terms like 'tadka' or 'bhun-lo').`;
         const prompt = `Here are my leftovers: ${leftoverIngredients}`;
         
-        // IMPORTANT: Add your API key here
-        const apiKey = "AIzaSyC9ww598PYK9YbhQxaUdlwy7ps5aQaNcdM"; 
+        const apiKey = "AIzaSyASxHWMU-e4sweZohMia3iVN3vefSRh0l8"; // IMPORTANT: Replace with your key
         if (apiKey === "YOUR_GEMINI_API_KEY") {
             setError("Please add your Gemini API Key in the ZeroWaste component.");
             setIsLoading(false);
@@ -400,7 +402,7 @@ const ZeroWaste = () => {
     };
 
     return (
-        <div className="h-full w-full flex items-start justify-center">
+        <div className="h-full w-full flex items-start justify-center pt-8">
             <div className="w-full max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-10 space-y-8">
                 <div className="text-center">
                     <div className="inline-block bg-blue-100 p-3 rounded-full">
@@ -451,20 +453,9 @@ const ZeroWaste = () => {
         </div>
     );
 };
-
 // ============================================================================
-// == PLACEHOLDER, LANDING & NEW FEATURE COMPONENTS
+// == PLACEHOLDER & LANDING COMPONENTS
 // ============================================================================
-const PlaceholderComponent = ({ name, icon: Icon, color }: { name: string, icon: React.ElementType, color: string }) => (
-    <div className="h-full bg-white rounded-2xl shadow-sm border border-gray-200 p-8 flex flex-col items-center justify-center text-center">
-        <div className={`w-20 h-20 ${color.replace('text', 'bg').replace('-600','-100')} rounded-2xl mx-auto mb-6 flex items-center justify-center`}>
-            <Icon className={`w-10 h-10 ${color}`} />
-        </div>
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">{name}</h1>
-        <p className="text-lg text-gray-500">This feature is under construction. 🚧</p>
-    </div>
-);
-
 const LandingPage = () => (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 h-full flex flex-col justify-center items-center">
         <div className="text-center max-w-4xl">
@@ -514,35 +505,162 @@ const LandingPage = () => (
     </div>
 );
 
-const ChaatGPT = () => <PlaceholderComponent name="Chaat-GPT Voice" icon={Mic} color="text-purple-600" />;
+// ============================================================================
+// == VAPI-POWERED VOICE COMPONENT
+// ============================================================================
+const ChatMessage = ({ role, text }: { role: 'user' | 'assistant', text: string }) => (
+  <div className={`flex items-start gap-3 my-4 ${role === 'user' ? 'justify-end' : 'justify-start'}`}>
+    {role === 'assistant' && <BotMessageSquare className="h-8 w-8 text-blue-500 flex-shrink-0" />}
+    <div className={`px-4 py-2 rounded-lg max-w-lg ${role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}>
+      <p>{text}</p>
+    </div>
+  </div>
+);
+
+const ChaatGPT = () => {
+    const [vapi, setVapi] = useState<Vapi | null>(null);
+    const [isSessionActive, setIsSessionActive] = useState(false);
+    const [isAssistantSpeaking, setIsAssistantSpeaking] = useState(false);
+    const [conversation, setConversation] = useState<{ role: 'user' | 'assistant'; text: string }[]>([]);
+    const chatContainerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        // IMPORTANT: Replace with your Vapi Public Key
+        const vapiInstance = new Vapi('59992990-1840-4767-adf9-4fd44bda821e');
+        setVapi(vapiInstance);
+
+        vapiInstance.on('call-start', () => {
+            toast.success("Chaat-GPT is connected!");
+            setIsSessionActive(true);
+            setConversation([]);
+        });
+
+        vapiInstance.on('call-end', () => {
+            toast.info("Session ended.");
+            setIsSessionActive(false);
+            setIsAssistantSpeaking(false);
+        });
+
+        vapiInstance.on('speech-start', () => setIsAssistantSpeaking(true));
+        vapiInstance.on('speech-end', () => setIsAssistantSpeaking(false));
+
+        vapiInstance.on('message', (message) => {
+            if (message.type === 'transcript' && message.transcriptType === 'final' && message.transcript) {
+                setConversation(prev => [...prev, { role: 'user', text: message.transcript }]);
+            } else if (message.type === 'assistant-message' && message.message) {
+                setConversation(prev => [...prev, { role: 'assistant', text: message.message as string }]);
+            }
+        });
+
+        return () => { vapiInstance.stop(); };
+    }, []);
+
+    useEffect(() => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    }, [conversation]);
+
+    const startSession = () => {
+        if (!vapi) return;
+        toast.loading("Connecting to Chaat-GPT...");
+
+        const assistantConfig = {
+            name: "Chaat-GPT",
+            firstMessage: "Namaste! Main Chaat-GPT hoon. How can I help you manage your stall today?",
+            transcriber: { provider: "deepgram", model: "nova-2", language: "en-IN", },
+            voice: { provider: "playht", voiceId: "jennifer", },
+            model: {
+                provider: "openai",
+                model: "gpt-4-turbo",
+                messages: [{
+                    role: "system",
+                    content: `You are "Chaat-GPT," a specialized AI sous-chef and business analyst for Indian street food vendors. Your persona is helpful, concise, and friendly. You understand Hinglish (Telugu + Hindi + English) perfectly. Your goal is to help vendors maximize profit and maintain quality. You have three core functions: 1. **AI Sous-Chef:** When the user describes their ingredients (e.g., "tomatoes are sour," "chilies are mild"), provide precise, simple recipe adjustments to maintain taste consistency. Give measurements in grams, ml, and simple terms like 'chutki bhar' (a pinch). 2. **Profit Optimizer:** When the user gives you ingredient prices, calculate per-plate costs and suggest which high-margin dish to promote for the day. Be direct and give clear, actionable advice. 3. **Zero-Waste Genius:** When the user tells you their leftover ingredients, generate a simple, creative recipe to sell the next day as a "special." Name the new dish. Always be ready to switch between these roles based on the user's voice commands. Start the conversation by introducing yourself and asking how you can help.`,
+                }, ],
+            },
+        };
+
+        vapi.start(assistantConfig);
+    };
+
+    const stopSession = () => { vapi?.stop(); };
+
+    const handleButtonClick = () => {
+        if (isSessionActive) { stopSession(); } 
+        else { startSession(); }
+    };
+
+    return (
+        <div className="h-full w-full flex items-center justify-center">
+            <Toaster richColors position="top-right" />
+            <div className="w-full max-w-2xl h-[90%] lg:h-[80%] flex flex-col bg-white rounded-2xl shadow-xl border border-gray-200">
+                <header className="flex justify-between items-center p-6 border-b">
+                    <h1 className="text-2xl font-bold text-gray-800">Chaat-GPT Assistant</h1>
+                    <div className="flex items-center gap-3">
+                        <span className="text-sm font-medium text-gray-500">
+                            {isAssistantSpeaking ? "Assistant is speaking..." : "Ready"}
+                        </span>
+                        {isAssistantSpeaking && <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>}
+                    </div>
+                </header>
+
+                <div ref={chatContainerRef} className="flex-1 p-6 overflow-y-auto">
+                    {conversation.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center h-full text-gray-500">
+                            <BotMessageSquare className="h-16 w-16 mb-4" />
+                            <p>Click "Start Session" to talk to Chaat-GPT.</p>
+                            <p className="text-sm mt-2">e.g., "Aaj ke tamatar thode khatte hain."</p>
+                        </div>
+                    ) : (
+                        conversation.map((msg, index) => (
+                            <ChatMessage key={index} role={msg.role} text={msg.text} />
+                        ))
+                    )}
+                </div>
+
+                <div className="flex justify-center items-center p-6 border-t">
+                    <button
+                        onClick={handleButtonClick}
+                        disabled={!vapi}
+                        className={`flex items-center gap-3 px-8 py-4 text-lg font-semibold text-white rounded-full transition-all duration-300 shadow-lg ${!vapi ? 'bg-gray-400 cursor-not-allowed' : ''} ${isSessionActive ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'}`}>
+                        {isSessionActive ? (
+                            <><Phone className="h-6 w-6" /> End Session</>
+                        ) : (
+                            !vapi ? (
+                                <><Loader2Icon className="h-6 w-6 animate-spin" /> Initializing...</>
+                            ) : (
+                                <><Mic className="h-6 w-6" /> Start Session</>
+                            )
+                        )}
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 
 // ============================================================================
 // == NEW FEATURE: DAILY SALES STRATEGY
 // ============================================================================
-// Utility function to generate a unique ID for local use
 const generateUUID = () => crypto.randomUUID();
 
-// Helper function to format AI recommendation into bullet points
 const formatRecommendation = (text: string | null) => {
     if (!text) return null;
-    const lines = text.split('\n').filter(line => line.trim() !== ''); // Filter out empty lines
+    const lines = text.split('\n').filter(line => line.trim() !== '');
     const finalElements = [];
     let currentListItems: string[] = [];
-    let listKeyCounter = 0; // To ensure unique keys for <ul> elements
+    let listKeyCounter = 0;
 
     lines.forEach((line) => {
         const trimmedLine = line.trim();
-        // Check if the line looks like a list item (starts with *, -, or a number followed by .)
         const isListItem = trimmedLine.startsWith('* ') || trimmedLine.startsWith('- ') || /^\d+\.\s/.test(trimmedLine);
 
         if (isListItem) {
-            // If it's a list item, add it to the current list items array
             const content = trimmedLine.replace(/^(\* |\- |\d+\.\s)/, '').trim();
             currentListItems.push(content);
         } else {
-            // If it's not a list item
             if (currentListItems.length > 0) {
-                // If we were collecting list items, close the list and add it to finalElements
                 finalElements.push(
                     <ul key={`ul-${listKeyCounter++}`} className="list-disc list-inside space-y-2 text-gray-700">
                         {currentListItems.map((item, idx) => (
@@ -550,14 +668,12 @@ const formatRecommendation = (text: string | null) => {
                         ))}
                     </ul>
                 );
-                currentListItems = []; // Reset for the next list
+                currentListItems = [];
             }
-            // Add the current line as a paragraph
             finalElements.push(<p key={`p-${finalElements.length}`} className="mt-2 text-gray-700 leading-relaxed">{trimmedLine}</p>);
         }
     });
 
-    // After the loop, if there are any remaining list items, add them
     if (currentListItems.length > 0) {
         finalElements.push(
             <ul key={`ul-${listKeyCounter++}`} className="list-disc list-inside space-y-2 text-gray-700">
@@ -567,22 +683,12 @@ const formatRecommendation = (text: string | null) => {
             </ul>
         );
     }
-
     return <>{finalElements}</>;
 };
 
-// Main Component for this feature
 const DailyStrategy = () => {
     const [userId] = useState(generateUUID());
-    const [dailyItemsData, setDailyItemsData] = useState([
-        {
-            id: generateUUID(),
-            tiffinItem: '',
-            ingredientPrice: '',
-            dailySales: '',
-            perPlateProfit: ''
-        }
-    ]);
+    const [dailyItemsData, setDailyItemsData] = useState([{ id: generateUUID(), tiffinItem: '', ingredientPrice: '', dailySales: '', perPlateProfit: '' }]);
     const [aiRecommendation, setAiRecommendation] = useState('Enter data for your tiffin items and click "Get Strategy" to receive a daily sales strategy.');
     const [isGenerating, setIsGenerating] = useState(false);
     const [message, setMessage] = useState('');
@@ -590,13 +696,7 @@ const DailyStrategy = () => {
     const tiffinItems = ['Idli', 'Dosa', 'Vada', 'Upma', 'Poori', 'Pongal', 'Uthappam', 'Kesari'];
 
     const addTiffinItem = () => {
-        setDailyItemsData([...dailyItemsData, {
-            id: generateUUID(),
-            tiffinItem: '',
-            ingredientPrice: '',
-            dailySales: '',
-            perPlateProfit: ''
-        }]);
+        setDailyItemsData([...dailyItemsData, { id: generateUUID(), tiffinItem: '', ingredientPrice: '', dailySales: '', perPlateProfit: '' }]);
     };
 
     const removeTiffinItem = (id: string) => {
@@ -604,25 +704,17 @@ const DailyStrategy = () => {
     };
 
     const handleItemChange = (id: string, field: string, value: string) => {
-        setDailyItemsData(dailyItemsData.map(item =>
-            item.id === id ? { ...item, [field]: value } : item
-        ));
+        setDailyItemsData(dailyItemsData.map(item => item.id === id ? { ...item, [field]: value } : item));
     };
 
     const getAiSuggestion = useCallback(async () => {
-        const isValid = dailyItemsData.every(item =>
-            item.tiffinItem && item.tiffinItem !== 'Select an item' &&
-            item.ingredientPrice !== '' && item.dailySales !== '' && item.perPlateProfit !== ''
-        );
+        const isValid = dailyItemsData.every(item => item.tiffinItem && item.tiffinItem !== 'Select an item' && item.ingredientPrice !== '' && item.dailySales !== '' && item.perPlateProfit !== '');
 
         if (dailyItemsData.length === 0) {
-            setMessage('Please add at least one tiffin item to get a strategy.');
-            return;
+            setMessage('Please add at least one tiffin item to get a strategy.'); return;
         }
-
         if (!isValid) {
-            setMessage('Please fill in all input fields and select a Tiffin Item for all added entries.');
-            return;
+            setMessage('Please fill in all input fields and select a Tiffin Item for all added entries.'); return;
         }
 
         setIsGenerating(true);
@@ -630,51 +722,27 @@ const DailyStrategy = () => {
         setAiRecommendation('Generating strategy...');
 
         try {
-            let itemDetails = dailyItemsData.map(item => `
-        - Tiffin Item: ${item.tiffinItem}
-          - Daily Ingredient Price: ${item.ingredientPrice} INR
-          - Daily Sales (Plates): ${item.dailySales}
-          - Per Plate Profit: ${item.perPlateProfit} INR
-        `).join('');
-
-            const prompt = `As a sales strategist for a Tiffin Hotel, analyze the following daily data for various tiffin items:
-        ${itemDetails}
-
-        Based on this information, provide a specific, actionable daily sales strategy.
-        Consider the following aspects for each item or overall:
-        - Pricing adjustments
-        - Marketing focus (e.g., promotions, highlighting specific items)
-        - Menu item recommendations (e.g., pushing high-profit items, reducing focus on low-profit ones)
-        - Operational efficiency improvements
-
-        Present the strategy in a clear, concise bullet-point format, with each point being a distinct actionable step. Ensure each point starts on a new line.`;
-
+            let itemDetails = dailyItemsData.map(item => `- Tiffin Item: ${item.tiffinItem}\n  - Daily Ingredient Price: ${item.ingredientPrice} INR\n  - Daily Sales (Plates): ${item.dailySales}\n  - Per Plate Profit: ${item.perPlateProfit} INR\n`).join('');
+            const prompt = `As a sales strategist for a Tiffin Hotel, analyze the following daily data for various tiffin items:\n${itemDetails}\nBased on this information, provide a specific, actionable daily sales strategy. Consider pricing adjustments, marketing focus (e.g., promotions, highlighting specific items), menu recommendations, and operational efficiency improvements. Present the strategy in a clear, concise bullet-point format, with each point being a distinct actionable step. Ensure each point starts on a new line.`;
             const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
-            const apiKey = "AIzaSyC9ww598PYK9YbhQxaUdlwy7ps5aQaNcdM"; // Replace with your actual Gemini API key
+            const apiKey = "AIzaSyASxHWMU-e4sweZohMia3iVN3vefSRh0l8"; // IMPORTANT: Replace with your key
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
             const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
             });
             
             if (!response.ok) {
-                 const errorBody = await response.json();
-                 throw new Error(`API Error: ${errorBody.error?.message || 'Something went wrong'}`);
+                const errorBody = await response.json();
+                throw new Error(`API Error: ${errorBody.error?.message || 'Something went wrong'}`);
             }
-
             const result = await response.json();
-
             if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
-                const text = result.candidates[0].content.parts[0].text;
-                setAiRecommendation(text);
+                setAiRecommendation(result.candidates[0].content.parts[0].text);
             } else {
                 setAiRecommendation('Failed to get a strategy. Please try again.');
-                console.error("Gemini API response error:", result);
             }
         } catch (err: any) {
-            console.error("Error calling Gemini API:", err);
             setAiRecommendation(`An error occurred: ${err.message}`);
             setMessage('An error occurred. Please check your network connection and API key.');
         } finally {
@@ -683,10 +751,10 @@ const DailyStrategy = () => {
     }, [dailyItemsData]);
 
     return (
-        <div className="min-h-full bg-gradient-to-br from-indigo-50 to-purple-50 p-6 font-sans flex flex-col items-center">
-            <div className="w-full max-w-4xl bg-white shadow-xl rounded-2xl p-8 space-y-8">
-                <h1 className="text-4xl font-extrabold text-center text-gray-900 mb-8">Daily Sales Strategy</h1>
-                <div className="text-center text-sm text-gray-600 mb-4 p-2 bg-indigo-50 rounded-lg">
+        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-4 md:p-6 font-sans">
+            <div className="w-full max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-6 sm:p-8 space-y-8">
+                <h1 className="text-4xl font-extrabold text-center text-gray-900">Daily Sales Strategy</h1>
+                <div className="text-center text-sm text-gray-600 p-2 bg-indigo-50 rounded-lg">
                     <p>Session ID: <span className="font-mono text-indigo-800 break-all">{userId}</span></p>
                     <p className="text-xs text-gray-500 mt-1">Note: This is a temporary ID. Data is not saved after refresh.</p>
                 </div>
@@ -701,43 +769,37 @@ const DailyStrategy = () => {
                                     </button>
                                 )}
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                                 <div>
                                     <label htmlFor={`tiffinItem-${item.id}`} className="block text-sm font-medium text-gray-700 mb-1">Tiffin Item</label>
                                     <select id={`tiffinItem-${item.id}`} value={item.tiffinItem} onChange={(e) => handleItemChange(item.id, 'tiffinItem', e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out">
                                         <option value="">Select an item</option>
-                                        {tiffinItems.map((tiffin) => (
-                                            <option key={tiffin} value={tiffin}>{tiffin}</option>
-                                        ))}
+                                        {tiffinItems.map((tiffin) => (<option key={tiffin} value={tiffin}>{tiffin}</option>))}
                                     </select>
                                 </div>
                                 <div>
-                                    <label htmlFor={`ingredientPrice-${item.id}`} className="block text-sm font-medium text-gray-700 mb-1">Daily Ingredient Price (INR)</label>
-                                    <input type="number" id={`ingredientPrice-${item.id}`} value={item.ingredientPrice} onChange={(e) => handleItemChange(item.id, 'ingredientPrice', e.target.value)} placeholder="e.g., 5000" className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out" />
+                                    <label htmlFor={`ingredientPrice-${item.id}`} className="block text-sm font-medium text-gray-700 mb-1">Ingredient Price (INR)</label>
+                                    <input type="number" id={`ingredientPrice-${item.id}`} value={item.ingredientPrice} onChange={(e) => handleItemChange(item.id, 'ingredientPrice', e.target.value)} placeholder="e.g., 5000" className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
                                 </div>
                                 <div>
                                     <label htmlFor={`dailySales-${item.id}`} className="block text-sm font-medium text-gray-700 mb-1">Daily Sales (Plates)</label>
-                                    <input type="number" id={`dailySales-${item.id}`} value={item.dailySales} onChange={(e) => handleItemChange(item.id, 'dailySales', e.target.value)} placeholder="e.g., 150" className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out" />
+                                    <input type="number" id={`dailySales-${item.id}`} value={item.dailySales} onChange={(e) => handleItemChange(item.id, 'dailySales', e.target.value)} placeholder="e.g., 150" className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
                                 </div>
                                 <div>
                                     <label htmlFor={`perPlateProfit-${item.id}`} className="block text-sm font-medium text-gray-700 mb-1">Per Plate Profit (INR)</label>
-                                    <input type="number" id={`perPlateProfit-${item.id}`} value={item.perPlateProfit} onChange={(e) => handleItemChange(item.id, 'perPlateProfit', e.target.value)} placeholder="e.g., 25" className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out" />
+                                    <input type="number" id={`perPlateProfit-${item.id}`} value={item.perPlateProfit} onChange={(e) => handleItemChange(item.id, 'perPlateProfit', e.target.value)} placeholder="e.g., 25" className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
                                 </div>
                             </div>
                         </div>
                     ))}
                     <div className="flex justify-center">
-                        <button onClick={addTiffinItem} className="px-6 py-2 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-150 ease-in-out">
+                        <button onClick={addTiffinItem} className="px-6 py-2 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition">
                             Add Another Tiffin Item
                         </button>
                     </div>
                 </div>
 
-                {message && (
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative" role="alert">
-                        <span className="block sm:inline">{message}</span>
-                    </div>
-                )}
+                {message && (<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative" role="alert"><span className="block sm:inline">{message}</span></div>)}
 
                 <div className="flex justify-center">
                     <button onClick={getAiSuggestion} disabled={isGenerating || dailyItemsData.length === 0}
@@ -746,23 +808,9 @@ const DailyStrategy = () => {
                     </button>
                 </div>
 
-                <div className="bg-indigo-50 p-6 rounded-xl shadow-inner border border-indigo-200">
+                <div className="bg-indigo-50 p-6 rounded-xl shadow-inner border border-indigo-200 min-h-[150px]">
                     <h2 className="text-2xl font-bold text-gray-800 mb-4">AI Sales Strategy</h2>
-                    {formatRecommendation(aiRecommendation)}
-                </div>
-
-                <div className="mt-10">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-4">Tips for Effective Strategy Implementation</h2>
-                    <div className="space-y-4 text-gray-700">
-                        <ul className="list-disc list-inside space-y-2">
-                            <li><span className="font-semibold">Review Daily:</span> Use this tool daily to adapt to changing ingredient prices and sales trends.</li>
-                            <li><span className="font-semibold">Experiment with Pricing:</span> Based on the AI's suggestions, try small price adjustments and monitor their impact on sales and profit.</li>
-                            <li><span className="font-semibold">Promote High-Profit Items:</span> If the strategy suggests focusing on certain items, promote them actively through daily specials or visible displays.</li>
-                            <li><span className="font-semibold">Optimize Inventory:</span> Use insights on ingredient prices and sales to manage your stock efficiently, reducing waste.</li>
-                            <li><span className="font-semibold">Gather Customer Feedback:</span> Combine AI insights with direct customer feedback to refine your menu and offerings.</li>
-                            <li><span className="font-semibold">Track Performance:</span> Keep a record of your daily sales and profit after implementing strategies to measure effectiveness over time.</li>
-                        </ul>
-                    </div>
+                    {isGenerating ? <LoadingSpinner/> : formatRecommendation(aiRecommendation)}
                 </div>
             </div>
         </div>
@@ -770,204 +818,235 @@ const DailyStrategy = () => {
 };
 
 // ============================================================================
-// == MAIN APP COMPONENT (acts as State Manager and Router)
+// == MAIN APP COMPONENT (State Manager and Router)
 // ============================================================================
 function App() {
-  const [activeFeature, setActiveFeature] = useState<string | null>(null); // Default to null for landing page
-  const [ingredientPrices, setIngredientPrices] = useState<{ [key: string]: number }>({
-    onions: 30, potatoes: 25, tomatoes: 40, lentils: 80, rice: 50,
-    flour: 35, cheese: 200, oil: 120, salt: 10, spices: 15,
-  });
-  const [aiRecommendation, setAiRecommendation] = useState('');
-  const menuItems = useMemo(() => [
-    { id: 'onion-uttapam', name: 'Onion Uttapam', sellingPrice: 70, ingredients: { onions: 0.1, rice: 0.05, flour: 0.05, oil: 0.01, salt: 0.001, spices: 0.002, }, },
-    { id: 'masala-dosa', name: 'Masala Dosa', sellingPrice: 85, ingredients: { potatoes: 0.15, rice: 0.07, lentils: 0.03, onions: 0.03, oil: 0.01, salt: 0.001, spices: 0.003, }, },
-    { id: 'idli-sambar', name: 'Idli Sambar', sellingPrice: 60, ingredients: { rice: 0.1, lentils: 0.05, tomatoes: 0.05, spices: 0.005, salt: 0.001, }, },
-    { id: 'cheese-uttapam', name: 'Cheese Uttapam', sellingPrice: 90, ingredients: { cheese: 0.05, rice: 0.05, flour: 0.05, onions: 0.02, oil: 0.01, salt: 0.001, spices: 0.002, }, },
-    { id: 'plain-dosa', name: 'Plain Dosa', sellingPrice: 50, ingredients: { rice: 0.08, lentils: 0.02, oil: 0.005, salt: 0.001, }, },
-  ], []);
-  const [platesSold, setPlatesSold] = useState(() => {
-    const initialSales: { [key: string]: number } = {};
-    menuItems.forEach(item => { initialSales[item.id] = 10 + Math.floor(Math.random() * 50) });
-    return initialSales;
-  });
-  const [menuData, setMenuData] = useState<any[]>([]);
-  const [dailyPerformance, setDailyPerformance] = useState({ totalRevenue: 0, totalOverallProfit: 0 });
-  
-  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setIngredientPrices(p => ({ ...p, [name]: parseFloat(value) || 0 }));
-  };
-  const handlePlatesSoldChange = (id: string, delta: number) => {
-    setPlatesSold(p => ({ ...p, [id]: Math.max(0, (p[id] || 0) + delta) }));
-  };
-  
-  const calculateMenuMetrics = useCallback(() => {
-    let currentTotalRevenue = 0;
-    let currentTotalOverallProfit = 0;
-    const calculatedData = menuItems.map(item => {
-      const totalCost = Object.entries(item.ingredients).reduce((acc, [ingredient, quantity]) => acc + (quantity * (ingredientPrices[ingredient as keyof typeof ingredientPrices] || 0)), 0);
-      const profitPerPlate = item.sellingPrice - totalCost;
-      const profitMargin = item.sellingPrice > 0 ? (profitPerPlate / item.sellingPrice) * 100 : 0;
-      const plates = platesSold[item.id as keyof typeof platesSold] || 0;
-      const itemRevenue = item.sellingPrice * plates;
-      const itemProfit = profitPerPlate * plates;
-      currentTotalRevenue += itemRevenue;
-      currentTotalOverallProfit += itemProfit;
-      return { ...item, cost: totalCost, profitPerPlate, profitMargin, platesSold: plates, itemRevenue, itemProfit };
+    const [activeFeature, setActiveFeature] = useState<string | null>(null);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    
+    const [ingredientPrices, setIngredientPrices] = useState<{ [key: string]: number }>({
+        onions: 30, potatoes: 25, tomatoes: 40, lentils: 80, rice: 50,
+        flour: 35, cheese: 200, oil: 120, salt: 10, spices: 15,
     });
-    setMenuData(calculatedData);
-    setDailyPerformance({
-      totalRevenue: parseFloat(currentTotalRevenue.toFixed(2)),
-      totalOverallProfit: parseFloat(currentTotalOverallProfit.toFixed(2)),
+    const [aiRecommendation, setAiRecommendation] = useState('');
+    const menuItems = useMemo(() => [
+        { id: 'onion-uttapam', name: 'Onion Uttapam', sellingPrice: 70, ingredients: { onions: 0.1, rice: 0.05, flour: 0.05, oil: 0.01, salt: 0.001, spices: 0.002, }, },
+        { id: 'masala-dosa', name: 'Masala Dosa', sellingPrice: 85, ingredients: { potatoes: 0.15, rice: 0.07, lentils: 0.03, onions: 0.03, oil: 0.01, salt: 0.001, spices: 0.003, }, },
+        { id: 'idli-sambar', name: 'Idli Sambar', sellingPrice: 60, ingredients: { rice: 0.1, lentils: 0.05, tomatoes: 0.05, spices: 0.005, salt: 0.001, }, },
+        { id: 'cheese-uttapam', name: 'Cheese Uttapam', sellingPrice: 90, ingredients: { cheese: 0.05, rice: 0.05, flour: 0.05, onions: 0.02, oil: 0.01, salt: 0.001, spices: 0.002, }, },
+        { id: 'plain-dosa', name: 'Plain Dosa', sellingPrice: 50, ingredients: { rice: 0.08, lentils: 0.02, oil: 0.005, salt: 0.001, }, },
+    ], []);
+    const [platesSold, setPlatesSold] = useState(() => {
+        const initialSales: { [key: string]: number } = {};
+        menuItems.forEach(item => { initialSales[item.id] = 10 + Math.floor(Math.random() * 50) });
+        return initialSales;
     });
-  }, [ingredientPrices, platesSold, menuItems]);
+    const [menuData, setMenuData] = useState<any[]>([]);
+    const [dailyPerformance, setDailyPerformance] = useState({ totalRevenue: 0, totalOverallProfit: 0 });
+    
+    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setIngredientPrices(p => ({ ...p, [name]: parseFloat(value) || 0 }));
+    };
+    const handlePlatesSoldChange = (id: string, delta: number) => {
+        setPlatesSold(p => ({ ...p, [id]: Math.max(0, (p[id] || 0) + delta) }));
+    };
+    
+    const calculateMenuMetrics = useCallback(() => {
+        let currentTotalRevenue = 0;
+        let currentTotalOverallProfit = 0;
+        const calculatedData = menuItems.map(item => {
+          const totalCost = Object.entries(item.ingredients).reduce((acc, [ingredient, quantity]) => acc + (quantity * (ingredientPrices[ingredient as keyof typeof ingredientPrices] || 0)), 0);
+          const profitPerPlate = item.sellingPrice - totalCost;
+          const profitMargin = item.sellingPrice > 0 ? (profitPerPlate / item.sellingPrice) * 100 : 0;
+          const plates = platesSold[item.id as keyof typeof platesSold] || 0;
+          const itemRevenue = item.sellingPrice * plates;
+          const itemProfit = profitPerPlate * plates;
+          currentTotalRevenue += itemRevenue;
+          currentTotalOverallProfit += itemProfit;
+          return { ...item, cost: totalCost, profitPerPlate, profitMargin, platesSold: plates, itemRevenue, itemProfit };
+        });
+        setMenuData(calculatedData);
+        setDailyPerformance({
+          totalRevenue: parseFloat(currentTotalRevenue.toFixed(2)),
+          totalOverallProfit: parseFloat(currentTotalOverallProfit.toFixed(2)),
+        });
+    }, [ingredientPrices, platesSold, menuItems]);
 
-  const generateStaticAIRecommendation = useCallback(() => {
-    if (!menuData || menuData.length === 0 || menuData.every(item => item.platesSold === 0)) {
-        setAiRecommendation("Enter today's sales to get a profit recommendation.");
-        return;
+    const generateStaticAIRecommendation = useCallback(() => {
+        if (!menuData || menuData.length === 0 || menuData.every(item => item.platesSold === 0)) {
+            setAiRecommendation("Enter today's sales to get a profit recommendation.");
+            return;
+        }
+        const sortedByProfit = [...menuData].sort((a, b) => b.profitMargin - a.profitMargin);
+        const highestProfitItem = sortedByProfit[0];
+        const lowerProfitItemsWithSales = sortedByProfit.filter(item => item.id !== highestProfitItem.id && item.platesSold > 0 && item.profitMargin < highestProfitItem.profitMargin - 5);
+        if (highestProfitItem && highestProfitItem.profitMargin > 20 && lowerProfitItemsWithSales.length > 0) {
+            const lowerProfitItem = lowerProfitItemsWithSales[0];
+            const profitGainPerPlateShift = highestProfitItem.profitPerPlate - lowerProfitItem.profitPerPlate;
+            const potentialExtraProfit = profitGainPerPlateShift * 10;
+            setAiRecommendation(`**${highestProfitItem.name}** has a **${highestProfitItem.profitMargin.toFixed(0)}% margin**. Suggesting it over **${lowerProfitItem.name}** could earn an extra **₹${potentialExtraProfit.toFixed(2)}** for every 10 plates shifted.`);
+        } else if (highestProfitItem) {
+            setAiRecommendation(`Market is stable. **${highestProfitItem.name}** is your top earner with a **${highestProfitItem.profitMargin.toFixed(0)}% profit margin**. Keep it up!`);
+        }
+    }, [menuData]);
+
+    useEffect(() => { calculateMenuMetrics(); }, [calculateMenuMetrics]);
+    useEffect(() => { generateStaticAIRecommendation(); }, [generateStaticAIRecommendation]);
+
+    const handleFeatureSelect = (featureId: string) => {
+        setActiveFeature(featureId);
+        setIsSidebarOpen(false); // Close sidebar on selection (for mobile)
     }
-    const sortedByProfit = [...menuData].sort((a, b) => b.profitMargin - a.profitMargin);
-    const highestProfitItem = sortedByProfit[0];
-    const lowerProfitItemsWithSales = sortedByProfit.filter(item => item.id !== highestProfitItem.id && item.platesSold > 0 && item.profitMargin < highestProfitItem.profitMargin - 5);
-    if (highestProfitItem && highestProfitItem.profitMargin > 20 && lowerProfitItemsWithSales.length > 0) {
-        const lowerProfitItem = lowerProfitItemsWithSales[0];
-        const profitGainPerPlateShift = highestProfitItem.profitPerPlate - lowerProfitItem.profitPerPlate;
-        const potentialExtraProfit = profitGainPerPlateShift * 10;
-        setAiRecommendation(`**${highestProfitItem.name}** has a **${highestProfitItem.profitMargin.toFixed(0)}% margin**. Suggesting it over **${lowerProfitItem.name}** could earn an extra **₹${potentialExtraProfit.toFixed(2)}** for every 10 plates shifted.`);
-    } else if (highestProfitItem) {
-        setAiRecommendation(`Market is stable. **${highestProfitItem.name}** is your top earner with a **${highestProfitItem.profitMargin.toFixed(0)}% profit margin**. Keep it up!`);
-    }
-  }, [menuData]);
 
-  useEffect(() => { calculateMenuMetrics(); }, [calculateMenuMetrics]);
-  useEffect(() => { generateStaticAIRecommendation(); }, [generateStaticAIRecommendation]);
+    const features = [
+        { id: 'ai-chef', name: 'AI Sous-Chef', description: 'Recipe adjustments via AI', icon: Chef, color: 'text-orange-600', bgColor: 'bg-orange-50', badge: 'NEW' },
+        { id: 'profit-optimizer', name: 'Profit Optimizer', description: 'Edit prices & sales data', icon: TrendingUp, color: 'text-green-600', bgColor: 'bg-green-50', badge: 'HOT' },
+        { id: 'analytics', name: 'Performance Analytics', description: 'View dynamic charts', icon: BarChart3, color: 'text-pink-600', bgColor: 'bg-pink-50' },
+        { id: 'zero-waste', name: 'Zero-Waste Genius', description: 'Convert leftovers into profit', icon: Recycle, color: 'text-blue-600', bgColor: 'bg-blue-50' },
+        { id: 'chaat-gpt', name: 'Chaat-GPT Voice', description: 'Voice-powered intelligence', icon: Mic, color: 'text-purple-600', bgColor: 'bg-purple-50', badge: 'AI' },
+        { id: 'daily-strategy', name: 'Daily Sales Strategy', description: 'Market-based recommendations', icon: Target, color: 'text-indigo-600', bgColor: 'bg-indigo-50' },
+    ];
+    
+    const quickActionMapping: { [key: string]: { id: string; icon: React.ElementType; color: string } } = {
+        "Today's Ingredients": { id: 'ai-chef', icon: Calendar, color: 'text-amber-600' },
+        'Price Updates': { id: 'profit-optimizer', icon: IndianRupee, color: 'text-emerald-600' },
+        'Recipe Suggestions': { id: 'chaat-gpt', icon: Lightbulb, color: 'text-yellow-600' },
+        'Waste Tracker': { id: 'zero-waste', icon: Clock, color: 'text-rose-600' }
+    };
 
-  const features = [
-    { id: 'ai-chef', name: 'AI Sous-Chef', description: 'Recipe adjustments via AI', icon: Chef, color: 'text-orange-600', bgColor: 'bg-orange-50', badge: 'NEW' },
-    { id: 'profit-optimizer', name: 'Profit Optimizer', description: 'Edit prices & sales data', icon: TrendingUp, color: 'text-green-600', bgColor: 'bg-green-50', badge: 'HOT' },
-    { id: 'analytics', name: 'Performance Analytics', description: 'View dynamic charts', icon: BarChart3, color: 'text-pink-600', bgColor: 'bg-pink-50' },
-    { id: 'zero-waste', name: 'Zero-Waste Genius', description: 'Convert leftovers into profit', icon: Recycle, color: 'text-blue-600', bgColor: 'bg-blue-50' },
-    { id: 'chaat-gpt', name: 'Chaat-GPT Voice', description: 'Voice-powered intelligence', icon: Mic, color: 'text-purple-600', bgColor: 'bg-purple-50', badge: 'AI' },
-    { id: 'daily-strategy', name: 'Daily Sales Strategy', description: 'Market-based recommendations', icon: Target, color: 'text-indigo-600', bgColor: 'bg-indigo-50' },
-  ];
-  const quickActions = [
-    { name: 'Today\'s Ingredients', icon: Calendar, color: 'text-amber-600' },
-    { name: 'Price Updates', icon: IndianRupee, color: 'text-emerald-600' },
-    { name: 'Recipe Suggestions', icon: Lightbulb, color: 'text-yellow-600' },
-    { name: 'Waste Tracker', icon: Clock, color: 'text-rose-600' }
-  ];
+    const renderActiveFeature = () => {
+        if (!activeFeature) return <LandingPage />;
+        switch (activeFeature) {
+            case 'ai-chef': return <AIChef />;
+            case 'profit-optimizer': 
+                return <ProfitOptimizer 
+                    ingredientPrices={ingredientPrices} platesSold={platesSold} menuItems={menuItems}
+                    handlePriceChange={handlePriceChange} handlePlatesSoldChange={handlePlatesSoldChange}
+                    dailyPerformance={dailyPerformance} aiRecommendation={aiRecommendation}
+                />;
+            case 'analytics': 
+                return <PerformanceAnalytics menuData={menuData} dailyPerformance={dailyPerformance} />;
+            case 'zero-waste': return <ZeroWaste />;
+            case 'chaat-gpt': return <ChaatGPT />;
+            case 'daily-strategy': return <DailyStrategy />;
+            default: return <LandingPage />;
+        }
+    };
 
-  const renderActiveFeature = () => {
-    if (!activeFeature) {
-        return <LandingPage />;
-    }
-    switch (activeFeature) {
-        case 'ai-chef': return <AIChef />;
-        case 'profit-optimizer': 
-            return <ProfitOptimizer 
-                ingredientPrices={ingredientPrices} platesSold={platesSold} menuItems={menuItems}
-                handlePriceChange={handlePriceChange} handlePlatesSoldChange={handlePlatesSoldChange}
-                dailyPerformance={dailyPerformance} aiRecommendation={aiRecommendation}
-            />;
-        case 'analytics': 
-            return <PerformanceAnalytics menuData={menuData} dailyPerformance={dailyPerformance} />;
-        case 'zero-waste': return <ZeroWaste />;
-        case 'chaat-gpt': return <ChaatGPT />;
-        case 'daily-strategy': return <DailyStrategy />;
-        default: return <LandingPage />;
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <div className="w-80 bg-white shadow-xl border-r border-gray-200 flex flex-col">
-        <div className="p-6 border-b border-gray-100">
-            <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
-                    <Brain className="w-6 h-6 text-white" />
+    const SidebarContent = () => (
+        <>
+            <div className="p-6 border-b border-gray-100">
+                <div className="flex items-center space-x-3 mb-4 cursor-pointer" onClick={() => handleFeatureSelect(null)}>
+                    <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
+                        <Brain className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                        <h1 className="text-xl font-bold text-gray-900">StallOS</h1>
+                        <p className="text-sm text-gray-500">AI Street Food OS</p>
+                    </div>
                 </div>
-                <div>
-                    <h1 className="text-xl font-bold text-gray-900">StallOS</h1>
-                    <p className="text-sm text-gray-500">AI Street Food OS</p>
+                <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                        <User className="w-4 h-4 text-orange-600" />
+                    </div>
+                    <div className="flex-1">
+                        <p className="text-sm font-medium text-gray-900">Rajesh's Chaat Corner</p>
+                        <p className="text-xs text-gray-500">Premium Vendor</p>
+                    </div>
+                    <Star className="w-4 h-4 text-yellow-500 fill-current" />
                 </div>
             </div>
-            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                    <User className="w-4 h-4 text-orange-600" />
-                </div>
-                <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900">Rajesh's Chaat Corner</p>
-                    <p className="text-xs text-gray-500">Premium Vendor</p>
-                </div>
-                <Star className="w-4 h-4 text-yellow-500 fill-current" />
-            </div>
-        </div>
-        <div className="flex-1 p-4 overflow-y-auto">
-            <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-3">Core Features</h2>
-            <div className="space-y-2">
-                {features.map((feature) => {
-                    const Icon = feature.icon;
-                    const isActive = activeFeature === feature.id;
-                    return (
-                        <button key={feature.id} onClick={() => setActiveFeature(feature.id)}
-                            className={`w-full text-left p-3 rounded-xl transition-all duration-200 group relative ${isActive ? `${feature.bgColor} border-opacity-20 border-current` : 'hover:bg-gray-50'}`}>
-                            <div className="flex items-start space-x-3">
-                                <div className={`flex-shrink-0 p-2 rounded-lg ${isActive ? feature.bgColor : 'bg-gray-100 group-hover:bg-gray-200'} transition-colors`}>
-                                    <Icon className={`w-4 h-4 ${isActive ? feature.color : 'text-gray-600'}`} />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <div className="flex items-center justify-between">
-                                        <p className={`text-sm font-medium ${isActive ? feature.color : 'text-gray-900'}`}>{feature.name}</p>
-                                        {feature.badge && (<span className={`text-xs px-2 py-0.5 rounded-full font-medium ${feature.badge === 'NEW' ? 'bg-green-100 text-green-800' : feature.badge === 'HOT' ? 'bg-red-100 text-red-800' : 'bg-purple-100 text-purple-800'}`}>{feature.badge}</span>)}
-                                    </div>
-                                    <p className="text-xs text-gray-500 mt-1 leading-relaxed">{feature.description}</p>
-                                </div>
-                            </div>
-                        </button>
-                    );
-                })}
-            </div>
-            <div className="mt-8">
-                <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-3">Quick Actions</h2>
-                <div className="space-y-1">
-                    {quickActions.map((action, index) => {
-                        const Icon = action.icon;
+            <div className="flex-1 p-4 overflow-y-auto">
+                <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-3">Core Features</h2>
+                <div className="space-y-2">
+                    {features.map((feature) => {
+                        const Icon = feature.icon;
+                        const isActive = activeFeature === feature.id;
                         return (
-                            <button key={index} className="w-full text-left p-3 rounded-lg hover:bg-gray-50 transition-colors group flex items-center space-x-3">
-                                <Icon className={`w-4 h-4 ${action.color}`} />
-                                <span className="text-sm text-gray-700 group-hover:text-gray-900">{action.name}</span>
+                            <button key={feature.id} onClick={() => handleFeatureSelect(feature.id)}
+                                className={`w-full text-left p-3 rounded-xl transition-all duration-200 group relative ${isActive ? `${feature.bgColor}` : 'hover:bg-gray-50'}`}>
+                                <div className="flex items-start space-x-3">
+                                    <div className={`flex-shrink-0 p-2 rounded-lg ${isActive ? feature.bgColor : 'bg-gray-100 group-hover:bg-gray-200'} transition-colors`}>
+                                        <Icon className={`w-4 h-4 ${isActive ? feature.color : 'text-gray-600'}`} />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center justify-between">
+                                            <p className={`text-sm font-medium ${isActive ? feature.color : 'text-gray-900'}`}>{feature.name}</p>
+                                            {feature.badge && (<span className={`text-xs px-2 py-0.5 rounded-full font-medium ${feature.badge === 'NEW' ? 'bg-green-100 text-green-800' : feature.badge === 'HOT' ? 'bg-red-100 text-red-800' : 'bg-purple-100 text-purple-800'}`}>{feature.badge}</span>)}
+                                        </div>
+                                        <p className="text-xs text-gray-500 mt-1 leading-relaxed">{feature.description}</p>
+                                    </div>
+                                </div>
                             </button>
                         );
                     })}
                 </div>
-            </div>
-            <div className="mt-8 p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-xl border border-orange-100">
-                <h3 className="text-sm font-semibold text-gray-900 mb-3">Today's Performance</h3>
-                <div className="space-y-2">
-                    <div className="flex justify-between items-center"><span className="text-xs text-gray-600">Profit Margin</span><span className="text-xs font-semibold text-green-600">{(dailyPerformance.totalOverallProfit / dailyPerformance.totalRevenue * 100 || 0).toFixed(1)}%</span></div>
-                    <div className="flex justify-between items-center"><span className="text-xs text-gray-600">Total Sales</span><span className="text-xs font-semibold text-blue-600">₹{dailyPerformance.totalRevenue.toFixed(2)}</span></div>
-                    <div className="flex justify-between items-center"><span className="text-xs text-gray-600">Total Profit</span><span className="text-xs font-semibold text-purple-600">₹{dailyPerformance.totalOverallProfit.toFixed(2)}</span></div>
+                <div className="mt-8">
+                    <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-3">Quick Actions</h2>
+                    <div className="space-y-1">
+                        {Object.entries(quickActionMapping).map(([name, action]) => {
+                            const Icon = action.icon;
+                            return (
+                                <button key={name} onClick={() => handleFeatureSelect(action.id)} className="w-full text-left p-3 rounded-lg hover:bg-gray-50 transition-colors group flex items-center space-x-3">
+                                    <Icon className={`w-4 h-4 ${action.color}`} />
+                                    <span className="text-sm text-gray-700 group-hover:text-gray-900">{name}</span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+                <div className="mt-8 p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-xl border border-orange-100">
+                    <h3 className="text-sm font-semibold text-gray-900 mb-3">Today's Performance</h3>
+                    <div className="space-y-2">
+                        <div className="flex justify-between items-center"><span className="text-xs text-gray-600">Profit Margin</span><span className="text-xs font-semibold text-green-600">{(dailyPerformance.totalRevenue > 0 ? dailyPerformance.totalOverallProfit / dailyPerformance.totalRevenue * 100 : 0).toFixed(1)}%</span></div>
+                        <div className="flex justify-between items-center"><span className="text-xs text-gray-600">Total Sales</span><span className="text-xs font-semibold text-blue-600">₹{dailyPerformance.totalRevenue.toFixed(2)}</span></div>
+                        <div className="flex justify-between items-center"><span className="text-xs text-gray-600">Total Profit</span><span className="text-xs font-semibold text-purple-600">₹{dailyPerformance.totalOverallProfit.toFixed(2)}</span></div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div className="p-4 border-t border-gray-100">
-            <button className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <Settings className="w-4 h-4 text-gray-600" />
-                <span className="text-sm text-gray-700">Settings & Support</span>
-            </button>
-            <div className="mt-3 text-center">
-                <p className="text-xs text-gray-400">Powered by Chaat-GPT</p>
-                <p className="text-xs text-gray-300">The Future of Street Food</p>
+            <div className="p-4 border-t border-gray-100">
+                <button className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                    <Settings className="w-4 h-4 text-gray-600" />
+                    <span className="text-sm text-gray-700">Settings & Support</span>
+                </button>
+            </div>
+        </>
+    )
+
+    return (
+        <div className="h-screen bg-gray-50 flex">
+            {/* Mobile Sidebar */}
+            <div className={`fixed inset-0 z-40 flex md:hidden ${isSidebarOpen ? '' : 'pointer-events-none'}`}>
+                {/* Backdrop */}
+                <div onClick={() => setIsSidebarOpen(false)} className={`fixed inset-0 bg-black transition-opacity ${isSidebarOpen ? 'opacity-30' : 'opacity-0'}`}></div>
+                {/* Sidebar */}
+                <div className={`relative flex-1 flex flex-col max-w-xs w-full bg-white shadow-xl border-r border-gray-200 transform transition-transform ease-in-out duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+                    <SidebarContent />
+                </div>
+            </div>
+
+            {/* Desktop Sidebar */}
+            <div className="hidden md:flex md:flex-shrink-0">
+                <div className="w-80 flex flex-col bg-white shadow-xl border-r border-gray-200">
+                    <SidebarContent />
+                </div>
+            </div>
+
+            {/* Main Content */}
+            <div className="flex flex-col w-0 flex-1 overflow-hidden">
+                <div className="md:hidden pl-3 pt-3 pr-3 sm:pl-4 sm:pt-4 sm:pr-4">
+                    <button onClick={() => setIsSidebarOpen(true)} className="-ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                        <span className="sr-only">Open sidebar</span>
+                        <Menu className="h-6 w-6" aria-hidden="true" />
+                    </button>
+                </div>
+                <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none p-4 md:p-8">
+                    {renderActiveFeature()}
+                </main>
             </div>
         </div>
-      </div>
-      <main className="flex-1 p-8 overflow-y-auto">
-        {renderActiveFeature()}
-      </main>
-    </div>
-  );
+    );
 }
 
 export default App;
