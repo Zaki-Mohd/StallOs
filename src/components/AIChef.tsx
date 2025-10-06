@@ -15,8 +15,8 @@ const AIChef = () => {
   const [currentDateTime, setCurrentDateTime] = useState("");
   const [notification, setNotification] = useState<string | null>(null);
 
-  const API_KEY = "AIzaSyASxHWMU-e4sweZohMia3iVN3vefSRh0l8"; // IMPORTANT: Replace with your key
-  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+  const API_KEY = import.meta.env.VITE_GEMINI_API_KEY; // IMPORTANT: Replace with your key
+  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
   const recognition = useMemo(() => {
     const SpeechRecognition =
@@ -57,7 +57,7 @@ const AIChef = () => {
   }, []);
 
   const getAIResponseFromGemini = async (text: string) => {
-    if (API_KEY === "YOUR_GEMINI_API_KEY") {
+    if (!API_KEY) {
       setNotification(
         "Please add your Gemini API Key to the AIChef component."
       );
