@@ -28,11 +28,11 @@ const ZeroWaste = () => {
       recognition.interimResults = false;
       recognition.onstart = () => setIsListening(true);
       recognition.onend = () => setIsListening(false);
-      recognition.onerror = (event) => {
+      recognition.onerror = (event: any) => {
         setError(`Audio error: ${event.error}. Please type ingredients.`);
         setIsListening(false);
       };
-      recognition.onresult = (event) => {
+      recognition.onresult = (event: any) => {
         setLeftoverIngredients(event.results[0][0].transcript);
       };
       recognitionRef.current = recognition;
@@ -60,8 +60,8 @@ const ZeroWaste = () => {
     const systemInstruction = `You are "Chaat-GPT", an expert culinary assistant for Indian street food vendors. You specialize in creating delicious, sellable items from leftovers to minimize waste and maximize profit. Your tone is creative and encouraging. Your task is to take a list of leftover ingredients and generate a simple, appealing recipe suitable for a street food stall. The output must be a valid JSON object with two keys: "recipeName" (a catchy, marketable name for the dish) and "instructions" (clear, step-by-step instructions for preparation, written in a simple, friendly tone, possibly using some Hinglish terms like 'tadka' or 'bhun-lo').`;
     const prompt = `Here are my leftovers: ${leftoverIngredients}`;
 
-    const apiKey = "AIzaSyASxHWMU-e4sweZohMia3iVN3vefSRh0l8"; // IMPORTANT: Replace with your key
-    if (apiKey === "YOUR_GEMINI_API_KEY") {
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    if (!apiKey) {
       setError("Please add your Gemini API Key in the ZeroWaste component.");
       setIsLoading(false);
       return;

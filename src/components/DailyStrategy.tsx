@@ -92,7 +92,7 @@ const DailyStrategy = () => {
       const payload = {
         contents: [{ role: "user", parts: [{ text: prompt }] }],
       };
-      const apiKey = "AIzaSyASxHWMU-e4sweZohMia3iVN3vefSRh0l8"; // IMPORTANT: Replace with your key
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY; // IMPORTANT: Replace with your key
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
       const response = await fetch(apiUrl, {

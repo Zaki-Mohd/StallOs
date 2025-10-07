@@ -89,7 +89,7 @@ function App() {
     useEffect(() => { calculateMenuMetrics(); }, [calculateMenuMetrics]);
     useEffect(() => { generateStaticAIRecommendation(); }, [generateStaticAIRecommendation]);
 
-    const handleFeatureSelect = (featureId: string) => {
+    const handleFeatureSelect = (featureId: string | null) => {
         setActiveFeature(featureId);
         setIsSidebarOpen(false); // Close sidebar on selection (for mobile)
     }
