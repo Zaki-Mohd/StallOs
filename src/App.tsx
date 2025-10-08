@@ -7,14 +7,15 @@ import PerformanceAnalytics from './components/PerformanceAnalytics';
 import ZeroWaste from './components/ZeroWaste';
 import LandingPage from './components/LandingPage';
 import ChatGPT from './components/ChatGPT';
-import DailyStrategy from './components/DailyStrategy';
+
+import Footer from './components/Footer';
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend);
 
-// ============================================================================
+// ===========================================================================
 // == MAIN APP COMPONENT (State Manager and Router)
-// ============================================================================
+// ===========================================================================
 function App() {
     const [activeFeature, setActiveFeature] = useState<string | null>(null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -208,7 +209,7 @@ function App() {
             </div>
         </>
     )
-
+    
     return (
         <div className="h-screen bg-gray-50 flex">
             {/* Mobile Sidebar */}
@@ -238,7 +239,10 @@ function App() {
                 </div>
                 <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none p-4 md:p-8">
                     {renderActiveFeature()}
+                                {/* Global Footer */}
+                
                 </main>
+                <Footer />
             </div>
         </div>
     );
