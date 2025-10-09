@@ -76,6 +76,9 @@ const [authError, setAuthError] = useState<string>('');
 
   const handleConfirmBlur = () => setConfirmTouched(true);
 
+
+
+// Supabase User Sign-Up Handles Here   
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   setSubmitted(true);

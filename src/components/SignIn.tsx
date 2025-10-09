@@ -56,7 +56,7 @@ export default function SignIn({ onSwitch, onSubmit, className }: SignInProps) {
     const { name } = e.target;
     setTouched(t => ({ ...t, [name]: true } as any));
   };
-
+// Supabase User Email/Password Sign-in Handles Here   
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   setSubmitted(true);
@@ -103,6 +103,8 @@ const handleSubmit = async (e: React.FormEvent) => {
     console.error("Unexpected error:", err);
   }
 };
+
+// Supabase User Google Sign-in Handles Here   
 const handleGoogleSignIn = async () => {
   setAuthError('');
   try {
@@ -137,6 +139,8 @@ const handleGoogleSignIn = async () => {
     console.error("Unexpected error:", err);
   }
 };
+
+// Supabase User GitHub Sign-in Handles Here   
 const handleGithubSignIn = async () => {
   setAuthError('');
   try {
