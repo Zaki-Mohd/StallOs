@@ -9,6 +9,7 @@ import LandingPage from './components/LandingPage';
 import ChatGPT from './components/ChatGPT';
 
 import Footer from './components/Footer';
+import DailyStrategy from './components/DailyStrategy';
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend);
@@ -19,7 +20,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarEleme
 function App() {
     const [activeFeature, setActiveFeature] = useState<string | null>(null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    
+
     const [ingredientPrices, setIngredientPrices] = useState<{ [key: string]: number }>({
         onions: 30, potatoes: 25, tomatoes: 40, lentils: 80, rice: 50,
         flour: 35, cheese: 200, oil: 120, salt: 10, spices: 15,
@@ -39,7 +40,7 @@ function App() {
     });
     const [menuData, setMenuData] = useState<any[]>([]);
     const [dailyPerformance, setDailyPerformance] = useState({ totalRevenue: 0, totalOverallProfit: 0 });
-    
+
     const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setIngredientPrices(p => ({ ...p, [name]: parseFloat(value) || 0 }));
@@ -47,25 +48,25 @@ function App() {
     const handlePlatesSoldChange = (id: string, delta: number) => {
         setPlatesSold(p => ({ ...p, [id]: Math.max(0, (p[id] || 0) + delta) }));
     };
-    
+
     const calculateMenuMetrics = useCallback(() => {
         let currentTotalRevenue = 0;
         let currentTotalOverallProfit = 0;
         const calculatedData = menuItems.map(item => {
-          const totalCost = Object.entries(item.ingredients).reduce((acc, [ingredient, quantity]) => acc + (quantity * (ingredientPrices[ingredient as keyof typeof ingredientPrices] || 0)), 0);
-          const profitPerPlate = item.sellingPrice - totalCost;
-          const profitMargin = item.sellingPrice > 0 ? (profitPerPlate / item.sellingPrice) * 100 : 0;
-          const plates = platesSold[item.id as keyof typeof platesSold] || 0;
-          const itemRevenue = item.sellingPrice * plates;
-          const itemProfit = profitPerPlate * plates;
-          currentTotalRevenue += itemRevenue;
-          currentTotalOverallProfit += itemProfit;
-          return { ...item, cost: totalCost, profitPerPlate, profitMargin, platesSold: plates, itemRevenue, itemProfit };
+            const totalCost = Object.entries(item.ingredients).reduce((acc, [ingredient, quantity]) => acc + (quantity * (ingredientPrices[ingredient as keyof typeof ingredientPrices] || 0)), 0);
+            const profitPerPlate = item.sellingPrice - totalCost;
+            const profitMargin = item.sellingPrice > 0 ? (profitPerPlate / item.sellingPrice) * 100 : 0;
+            const plates = platesSold[item.id as keyof typeof platesSold] || 0;
+            const itemRevenue = item.sellingPrice * plates;
+            const itemProfit = profitPerPlate * plates;
+            currentTotalRevenue += itemRevenue;
+            currentTotalOverallProfit += itemProfit;
+            return { ...item, cost: totalCost, profitPerPlate, profitMargin, platesSold: plates, itemRevenue, itemProfit };
         });
         setMenuData(calculatedData);
         setDailyPerformance({
-          totalRevenue: parseFloat(currentTotalRevenue.toFixed(2)),
-          totalOverallProfit: parseFloat(currentTotalOverallProfit.toFixed(2)),
+            totalRevenue: parseFloat(currentTotalRevenue.toFixed(2)),
+            totalOverallProfit: parseFloat(currentTotalOverallProfit.toFixed(2)),
         });
     }, [ingredientPrices, platesSold, menuItems]);
 
@@ -103,7 +104,7 @@ function App() {
         { id: 'chaat-gpt', name: 'Chaat-GPT Voice', description: 'Voice-powered intelligence', icon: Mic, color: 'text-purple-600', bgColor: 'bg-purple-50', badge: 'AI' },
         { id: 'daily-strategy', name: 'Daily Sales Strategy', description: 'Market-based recommendations', icon: Target, color: 'text-indigo-600', bgColor: 'bg-indigo-50' },
     ];
-    
+
     const quickActionMapping: { [key: string]: { id: string; icon: React.ElementType; color: string } } = {
         "Today's Ingredients": { id: 'ai-chef', icon: Calendar, color: 'text-amber-600' },
         'Price Updates': { id: 'profit-optimizer', icon: IndianRupee, color: 'text-emerald-600' },
@@ -115,13 +116,13 @@ function App() {
         if (!activeFeature) return <LandingPage />;
         switch (activeFeature) {
             case 'ai-chef': return <AIChef />;
-            case 'profit-optimizer': 
-                return <ProfitOptimizer 
+            case 'profit-optimizer':
+                return <ProfitOptimizer
                     ingredientPrices={ingredientPrices} platesSold={platesSold} menuItems={menuItems}
                     handlePriceChange={handlePriceChange} handlePlatesSoldChange={handlePlatesSoldChange}
                     dailyPerformance={dailyPerformance} aiRecommendation={aiRecommendation}
                 />;
-            case 'analytics': 
+            case 'analytics':
                 return <PerformanceAnalytics menuData={menuData} dailyPerformance={dailyPerformance} />;
             case 'zero-waste': return <ZeroWaste />;
             case 'chaat-gpt': return <ChatGPT />;
@@ -178,6 +179,9 @@ function App() {
                         );
                     })}
                 </div>
+                <div>
+
+                </div>
                 <div className="mt-8">
                     <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-3">Quick Actions</h2>
                     <div className="space-y-1">
@@ -209,7 +213,7 @@ function App() {
             </div>
         </>
     )
-    
+
     return (
         <div className="h-screen bg-gray-50 flex">
             {/* Mobile Sidebar */}
@@ -237,12 +241,15 @@ function App() {
                         <Menu className="h-6 w-6" aria-hidden="true" />
                     </button>
                 </div>
-                <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none p-4 md:p-8">
-                    {renderActiveFeature()}
-                                {/* Global Footer */}
-                
+
+                {/* 👇 The updated scrollable container */}
+                <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none">
+                    <div className="p-4 md:p-8">
+                        {renderActiveFeature()}
+                    </div>
+                    {/* The footer is now part of the scrollable main content */}
+                    <Footer />
                 </main>
-                <Footer />
             </div>
         </div>
     );
