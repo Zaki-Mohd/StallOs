@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-
+import React, { useMemo, useState ,useEffect} from 'react';
+import { supabase } from '../utils/supabaseClient';
 /**
  * SignIn component (UI only)
  * - Email + Password fields
@@ -31,7 +31,7 @@ export default function SignIn({ onSwitch, onSubmit, className }: SignInProps) {
   const [submitted, setSubmitted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(true);
-
+  const [authError, setAuthError] = useState<string>('');
   const emailError = useMemo(() => {
     if (!touched.email && !submitted) return '';
     if (!values.email) return 'Email is required';
@@ -56,20 +56,131 @@ export default function SignIn({ onSwitch, onSubmit, className }: SignInProps) {
     const { name } = e.target;
     setTouched(t => ({ ...t, [name]: true } as any));
   };
+// Supabase User Email/Password Sign-in Handles Here   
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setSubmitted(true);
+  setAuthError('');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    if (!isValid) return;
-    // Include remember info if needed by parent in future (UI-only for now)
+  if (!isValid) return;
+
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: values.email,
+      password: values.password,
+    });
+
+    if (error) {
+      if (error.message.includes('Invalid login credentials')) {
+        setAuthError('Invalid email or password. Please try again.');
+      } else if (error.message.includes('Email not confirmed')) {
+        setAuthError('Please verify your email address before signing in. Check your inbox for the verification link.');
+      } else if (error.message.includes('rate limit')) {
+        setAuthError('Too many login attempts. Please try again in a few minutes.');
+      } else if (error.message.includes('network')) {
+        setAuthError('Network error. Please check your internet connection and try again.');
+      } else {
+        setAuthError(error.message);
+      }
+      return;
+    }
+
+    console.log("Sign-in successful:", data.user);
+    alert("Signed in successfully!");
     onSubmit?.(values);
-  };
+    window.location.href = "/";
 
+  } catch (err) {
+    if (err instanceof Error) {
+      if (err.message.includes('fetch') || err.message.includes('network')) {
+        setAuthError('Unable to connect to the server. Please check your internet connection.');
+      } else {
+        setAuthError('An unexpected error occurred. Please try again.');
+      }
+    } else {
+      setAuthError('An unexpected error occurred. Please try again.');
+    }
+    console.error("Unexpected error:", err);
+  }
+};
+
+// Supabase User Google Sign-in Handles Here   
+const handleGoogleSignIn = async () => {
+  setAuthError('');
+  try {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/`, 
+      },
+    });
+
+    if (error) {
+      if (error.message.includes('popup')) {
+        setAuthError('Pop-up was blocked. Please allow pop-ups for this site and try again.');
+      } else if (error.message.includes('network')) {
+        setAuthError('Network error. Please check your internet connection and try again.');
+      } else {
+        setAuthError(`Google sign-in failed: ${error.message}`);
+      }
+      return;
+    }
+
+  } catch (err) {
+    if (err instanceof Error) {
+      if (err.message.includes('fetch') || err.message.includes('network')) {
+        setAuthError('Unable to connect to the server. Please check your internet connection.');
+      } else {
+        setAuthError('An unexpected error occurred during Google sign-in. Please try again.');
+      }
+    } else {
+      setAuthError('An unexpected error occurred during Google sign-in. Please try again.');
+    }
+    console.error("Unexpected error:", err);
+  }
+};
+
+// Supabase User GitHub Sign-in Handles Here   
+const handleGithubSignIn = async () => {
+  setAuthError('');
+  try {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "github",
+      options: {
+        redirectTo: `${window.location.origin}/`, 
+      },
+    });
+
+    if (error) {
+      if (error.message.includes('popup')) {
+        setAuthError('Pop-up was blocked. Please allow pop-ups for this site and try again.');
+      } else if (error.message.includes('network')) {
+        setAuthError('Network error. Please check your internet connection and try again.');
+      } else {
+        setAuthError(`GitHub sign-in failed: ${error.message}`);
+      }
+      return;
+    }
+
+  } catch (err) {
+    if (err instanceof Error) {
+      if (err.message.includes('fetch') || err.message.includes('network')) {
+        setAuthError('Unable to connect to the server. Please check your internet connection.');
+      } else {
+        setAuthError('An unexpected error occurred during GitHub sign-in. Please try again.');
+      }
+    } else {
+      setAuthError('An unexpected error occurred during GitHub sign-in. Please try again.');
+    }
+    console.error("Unexpected error:", err);
+  }
+};
   const handleSwitch = (e: React.MouseEvent) => {
     e.preventDefault();
     if (onSwitch) onSwitch('signup');
     else window.location.hash = '#signup';
   };
+
 
   return (
     <div className={['min-h-screen flex items-center justify-center p-4 bg-gray-50', className].filter(Boolean).join(' ')}>
@@ -87,6 +198,11 @@ export default function SignIn({ onSwitch, onSubmit, className }: SignInProps) {
         )}
 
         <form onSubmit={handleSubmit} noValidate>
+          {authError && (
+  <div className="mb-4 rounded-lg bg-red-50 border border-red-200 p-3">
+    <p className="text-sm text-red-800">{authError}</p>
+  </div>
+)}
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -186,10 +302,10 @@ export default function SignIn({ onSwitch, onSubmit, className }: SignInProps) {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2">
-              <button type="button" className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
+              <button type="button" className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" onClick={handleGoogleSignIn}>
                 <span>Google</span>
               </button>
-              <button type="button" className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
+              <button onClick={handleGithubSignIn} type="button" className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
                 <span>GitHub</span>
               </button>
             </div>
