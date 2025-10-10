@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-
+import { supabase } from '../utils/supabaseClient';
 /**
  * SignUp component (UI only)
  * - Email + Password fields
@@ -41,7 +41,7 @@ export default function SignUp({ onSwitch, onSubmit, className }: SignUpProps) {
   const [confirmTouched, setConfirmTouched] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-
+const [authError, setAuthError] = useState<string>('');
   const emailError = useMemo(() => {
     if (!touched.email && !submitted) return '';
     if (!values.email) return 'Email is required';
@@ -76,12 +76,61 @@ export default function SignUp({ onSwitch, onSubmit, className }: SignUpProps) {
 
   const handleConfirmBlur = () => setConfirmTouched(true);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    if (!isValid) return;
-    onSubmit?.(values);
-  };
+
+
+// Supabase User Sign-Up Handles Here   
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setSubmitted(true);
+  setAuthError('');
+
+  if (!isValid) return;
+
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email: values.email,
+      password: values.password,
+    });
+
+    if (error) {
+      if (error.message.includes('rate limit')) {
+        setAuthError('Too many signup attempts. Please try again in a few minutes.');
+      } else if (error.message.includes('invalid email')) {
+        setAuthError('Please enter a valid email address.');
+      } else if (error.message.includes('password')) {
+        setAuthError('Password does not meet requirements. Please try a stronger password.');
+      } else if (error.message.includes('network')) {
+        setAuthError('Network error. Please check your internet connection and try again.');
+      } else {
+        setAuthError(error.message);
+      }
+      return;
+    }
+
+    if (data?.user && data.user.identities?.length === 0) {
+      setAuthError('This email is already registered. Please sign in instead.');
+      return;
+    }
+
+    if (data?.user) {
+      alert("Signup successful! Please check your email to verify your account.");
+      console.log("User created:", data.user);
+      onSubmit?.(values);
+    }
+  } catch (err) {
+    if (err instanceof Error) {
+      if (err.message.includes('fetch') || err.message.includes('network')) {
+        setAuthError('Unable to connect to the server. Please check your internet connection.');
+      } else {
+        setAuthError('An unexpected error occurred. Please try again.');
+      }
+    } else {
+      setAuthError('An unexpected error occurred. Please try again.');
+    }
+    console.error("Unexpected error:", err);
+  }
+};
+
 
   const handleSwitch = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -222,7 +271,11 @@ export default function SignUp({ onSwitch, onSubmit, className }: SignUpProps) {
                 </p>
               )}
             </div>
-
+{authError && (
+  <div className="rounded-lg bg-red-50 border border-red-200 p-3">
+    <p className="text-sm text-red-800">{authError}</p>
+  </div>
+)}
             <button
               type="submit"
               className="w-full inline-flex items-center justify-center rounded-lg bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 disabled:opacity-60 disabled:cursor-not-allowed"
