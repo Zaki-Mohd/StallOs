@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { Brain, ChefHat as Chef, TrendingUp, Recycle } from "lucide-react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
-import { supabase } from "../utils/supabaseClient";
+
 const LandingPage = () => {
   const [authRoute, setAuthRoute] = useState<'signin' | 'signup' | null>(null);
-const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     const checkHash = () => {
@@ -17,30 +16,7 @@ const [user, setUser] = useState<any>(null);
     window.addEventListener('hashchange', checkHash);
     return () => window.removeEventListener('hashchange', checkHash);
   }, []);
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setUser(session.user);
-        console.log(session.user,"checkl")
-      } else {
-        console.log("No active session found");
-      }
-    });
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        setUser(session.user);
-      } else {
-        setUser(null);
-      }
-    });
-
-    return () => listener.subscription.unsubscribe();
-  }, []);
-    const handleLogout = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-  };
   return (
     <div className="h-full w-full flex flex-col">
       {/* Top Navbar for Landing Page */}
@@ -55,7 +31,7 @@ const [user, setUser] = useState<any>(null);
               <p className="text-xs text-gray-500">AI Street Food OS</p>
             </div>
           </button>
-         {user==null? (<div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => { window.location.hash = 'signin'; }}
               className={`inline-flex items-center rounded-md px-3 py-1.5 text-sm font-medium shadow-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500
@@ -79,20 +55,6 @@ const [user, setUser] = useState<any>(null);
               Sign Up
             </button>
           </div>
-         ):
-         (
-          
-        <div className="flex items-center gap-2">
-        
-          <button
-        onClick={handleLogout}
-            className="inline-flex items-center rounded-md px-3 py-1.5 text-sm font-medium border border-gray-300 bg-white text-gray-700 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500"
-          >
-            Logout
-          </button>
-        </div>
-         )
-          }
         </div>
       </header>
 
