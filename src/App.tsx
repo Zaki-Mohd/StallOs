@@ -9,7 +9,6 @@ import LandingPage from './components/LandingPage';
 import ChatGPT from './components/ChatGPT';
 
 import Footer from './components/Footer';
-
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend);
 

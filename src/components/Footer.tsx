@@ -1,155 +1,154 @@
-import React from 'react';
-import { Github, Twitter, Linkedin, Facebook, Mail } from 'lucide-react';
+// src/components/Footer.tsx
+import { Brain } from "lucide-react";
+import React from "react";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedinIn,
+  FaGithub,
+} from "react-icons/fa";
 
-/**
- * Global Footer Component
- * - Responsive, accessible, and Tailwind-styled
- * - Includes copyright text, social links, and important page links
- * - Designed to sit at the bottom of all pages when placed after main content in a flex column layout
- */
+const navigation = {
+  product: [
+    { name: "Features", href: "https://www.example.com/features" },
+    { name: "Pricing", href: "https://www.example.com/pricing" },
+    { name: "Integrations", href: "https://www.example.com/integrations" },
+    { name: "Changelog", href: "https://www.example.com/changelog" },
+  ],
+  resources: [
+    { name: "Documentation", href: "https://www.example.com/docs" },
+    { name: "Tutorials", href: "https://www.example.com/tutorials" },
+    { name: "Blog", href: "https://www.example.com/blog" },
+    { name: "Support", href: "https://www.example.com/support" },
+  ],
+  company: [
+    { name: "About", href: "https://www.example.com/about" },
+    { name: "Careers", href: "https://www.example.com/careers" },
+    { name: "Contact", href: "https://www.example.com/contact" },
+    { name: "Partners", href: "https://www.example.com/partners" },
+  ],
+  legal: [
+    { name: "Privacy Policy", href: "https://www.example.com/privacy-policy" },
+    { name: "Terms of Service", href: "https://www.example.com/terms-of-service" },
+    { name: "Cookies Settings", href: "https://www.example.com/cookies-settings" },
+  ],
+};
+
+const socialLinks = [
+  { name: "Facebook", href: "https://facebook.com", icon: <FaFacebookF /> },
+  { name: "Twitter", href: "https://twitter.com", icon: <FaTwitter /> },
+  { name: "Instagram", href: "https://instagram.com", icon: <FaInstagram /> },
+  { name: "LinkedIn", href: "https://linkedin.com", icon: <FaLinkedinIn /> },
+  { name: "GitHub", href: "https://github.com", icon: <FaGithub /> },
+];
+
 const Footer: React.FC = () => {
-  const year = new Date().getFullYear();
-
   return (
-    <footer className="w-full border-t-2 border-orange-200 bg-gradient-to-r from-orange-50 via-rose-50 to-red-50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
-        {/* Top */}
-        <div className="grid gap-3 md:grid-cols-3">
-          {/* Brand */}
-          <div>
-            <h3 className="text-sm font-semibold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">StallOS</h3>
-            <p className="mt-2 text-[11px] text-gray-600">
-              AI Street Food OS to optimize menus, pricing, and daily operations.
-            </p>
-            {/* Social icons restored with non-clickable hash links */}
-            <div className="mt-2 flex items-center gap-2">
-              <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                aria-label="GitHub"
-                className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-orange-200 text-orange-700 hover:text-orange-800 hover:bg-orange-100 transition-colors"
-              >
-                <Github className="h-3 w-3" />
-              </a>
-              <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                aria-label="Twitter"
-                className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-orange-200 text-orange-700 hover:text-orange-800 hover:bg-orange-100 transition-colors"
-              >
-                <Twitter className="h-3 w-3" />
-              </a>
-              <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                aria-label="LinkedIn"
-                className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-orange-200 text-orange-700 hover:text-orange-800 hover:bg-orange-100 transition-colors"
-              >
-                <Linkedin className="h-3 w-3" />
-              </a>
-              <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                aria-label="Facebook"
-                className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-orange-200 text-orange-700 hover:text-orange-800 hover:bg-orange-100 transition-colors"
-              >
-                <Facebook className="h-3 w-3" />
-              </a>
-              <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                aria-label="Email"
-                className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-orange-200 text-orange-700 hover:text-orange-800 hover:bg-orange-100 transition-colors"
-              >
-                <Mail className="h-3 w-3" />
-              </a>
+    <footer className="bg-white border-t border-gray-200 text-gray-600">
+      <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+        {/* Brand */}
+        <div>
+         <button onClick={() => { window.location.hash = ''; }} className="flex items-center gap-2 group">
+            <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+              <Brain className="w-4 h-4 text-white" />
             </div>
+            <div className="text-left">
+              <p className="text-sm font-bold text-gray-900 group-hover:text-gray-950">StallOS</p>
+              <p className="text-xs text-gray-500">AI Street Food OS</p>
+            </div>
+          </button>
+          {/* Social Icons */}
+          <div className="flex space-x-4 mt-6 text-xl text-gray-600">
+            {socialLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                aria-label={link.name}
+                className="hover:text-orange-500 transition-colors"
+              >
+                {link.icon}
+              </a>
+            ))}
           </div>
-
-          {/* Quick Links */}
-          <nav aria-label="Important links" className="grid grid-cols-2 gap-3 md:col-span-2 md:grid-cols-3">
-            <div>
-              <h4 className="text-[11px] font-semibold text-orange-700">Company</h4>
-              <ul className="mt-2.5 space-y-1 text-[11px] text-gray-700">
-                <li>
-                  <a
-                    href="https://github.com/DarshanBhamare/StallOs"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-orange-800 hover:underline underline-offset-4"
-                  >
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="mailto:support@stallos.app"
-                    className="hover:text-orange-800 hover:underline underline-offset-4"
-                  >
-                    Contact Us
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-[11px] font-semibold text-orange-700">Legal</h4>
-              <ul className="mt-2.5 space-y-1 text-[11px] text-gray-700">
-                <li>
-                  <a
-                    href="https://www.termsfeed.com/public/uploads/2021/03/sample-terms-of-service-template.pdf"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-orange-800 hover:underline underline-offset-4"
-                  >
-                    Terms of Service
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.privacypolicies.com/live/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-orange-800 hover:underline underline-offset-4"
-                  >
-                    Privacy Policy
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-[11px] font-semibold text-orange-700">Resources</h4>
-              <ul className="mt-2.5 space-y-1 text-[11px] text-gray-700">
-                <li>
-                  <a
-                    href="https://github.com/DarshanBhamare/StallOs/issues"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-orange-800 hover:underline underline-offset-4"
-                  >
-                    Support
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/DarshanBhamare/StallOs"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-orange-800 hover:underline underline-offset-4"
-                  >
-                    Documentation
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </nav>
         </div>
 
-        {/* Bottom */}
-        <div className="mt-4 flex flex-col gap-2 border-t border-orange-200 pt-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-[11px] text-orange-800">© {year} StallOS. All rights reserved.</p>
-          <p className="text-[11px] text-orange-700">
-            Built with <span className="font-medium text-gray-700">React</span> and <span className="font-medium text-gray-700">Tailwind CSS</span>.
-          </p>
+        {/* Navigation Sections */}
+        <nav
+          aria-label="Footer"
+          className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 col-span-1 sm:col-span-2 md:col-span-3 gap-8"
+        >
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 mb-4">
+              Product
+            </h3>
+            <ul className="space-y-2 text-sm">
+              {navigation.product.map((item) => (
+                <li key={item.name}>
+                  <a
+                    href={item.href}
+                    className="hover:text-orange-500 transition-colors"
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 mb-4">
+              Resources
+            </h3>
+            <ul className="space-y-2 text-sm">
+              {navigation.resources.map((item) => (
+                <li key={item.name}>
+                  <a
+                    href={item.href}
+                    className="hover:text-orange-500 transition-colors"
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 mb-4">
+              Company
+            </h3>
+            <ul className="space-y-2 text-sm">
+              {navigation.company.map((item) => (
+                <li key={item.name}>
+                  <a
+                    href={item.href}
+                    className="hover:text-orange-500 transition-colors"
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="border-t border-gray-200 py-6">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+          <p>© {new Date().getFullYear()} StallOS. All rights reserved.</p>
+          <div className="flex flex-wrap gap-6 mt-4 md:mt-0">
+            {navigation.legal.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                className="hover:text-orange-500 transition-colors"
+              >
+                {item.name}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
