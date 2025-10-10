@@ -47,40 +47,6 @@ Follow these instructions to set up the project on your local machine.
     *   **Google Gemini API Key**: Open the `src/App.tsx` file. Find the components `AIChef`, `ZeroWaste`, and `DailyStrategy`. In each, locate the `apiKey` variable and replace `"AIzaSyASxHWMU-e4sweZohMia3iVN3vefSRh0l8"` with your actual Gemini API key.
     *   **Vapi AI Public Key**: In `src/App.tsx`, find the `ChaatGPT` component. Locate the line `const vapiInstance = new Vapi(...)` and replace `'59992990-1840-4767-adf9-4fd44bda821e'` with your Vapi public key.
 
-5. **Configure Supabase Authentication**
-
-This project now supports **user authentication** using [Supabase](https://supabase.com).  
-Follow these steps to configure your own Supabase project:
-
-#### Step 1: Create a Supabase Project
-1. Go to [Supabase](https://supabase.com) and log in or sign up.  
-2. Click **New Project**, enter a project name, and create it.  
-3. Open your project dashboard.
-
-#### Step 2: Enable Authentication Providers
-1. Navigate to **Authentication → Providers**.  
-2. Enable **Email/Password** sign-in.  
-3. (Optional) To enable Google or GitHub login:
-   - Toggle the provider **ON**.  
-   - Add your **Client ID** and **Client Secret** from Google Cloud Console and GitHub Developer Settings.  
-   - Set the redirect URL to:  
-     ```
-     https://<your-project-ref>.supabase.co/auth/v1/callback
-     ```
-     Replace `<your-project-ref>` with your Supabase project reference ID.
-
-#### Step 3: Add Environment Variables
-Create a `.env` file in the project root and add:
-
-```bash
-VITE_SUPABASE_URL=https://<your-project-ref>.supabase.co
-VITE_SUPABASE_ANON_KEY=<your-anon-key>
-```
-Find these values under Project **Settings → API** in Supabase.
-
-#### Step 4: Connect the Frontend
-The Supabase client is defined in **src/utils/supabaseClient.ts**:
-
 ### Running the Application
 
 Once you have completed the setup steps, you can run the application with the following command:
